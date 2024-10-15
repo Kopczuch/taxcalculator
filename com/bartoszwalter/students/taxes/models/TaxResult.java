@@ -2,20 +2,20 @@ package com.bartoszwalter.students.taxes.models;
 
 public class TaxResult {
 
-    public double income;
-    public double socialSecurity;
-    public double healthSecurity;
-    public double sicknessSecurity;
-    public double healthSocialTax9;
-    public double healthSocialTax7_75;
-    public double taxDeductibleExpenses;
-    public double taxedIncome;
-    public long roundedTaxedIncome;
-    public double advanceTax;
-    public double taxFreeIncome;
-    public double advanceTaxPaid;
-    public long roundedAdvanceTaxPaid;
-    public double netIncome;
+    private double income;
+    private double socialSecurity;
+    private double healthSecurity;
+    private double sicknessSecurity;
+    private double healthSocialTax9;
+    private double healthSocialTax7_75;
+    private double taxDeductibleExpenses;
+    private double taxedIncome;
+    private long roundedTaxedIncome;
+    private double advanceTax;
+    private double taxFreeIncome;
+    private double advanceTaxPaid;
+    private long roundedAdvanceTaxPaid;
+    private double netIncome;
 
     public TaxResult(TaxResultBuilder builder) {
         this.income = builder.income;
@@ -32,5 +32,61 @@ public class TaxResult {
         this.advanceTaxPaid = builder.advanceTaxPaid;
         this.roundedAdvanceTaxPaid = builder.roundedAdvanceTaxPaid;
         this.netIncome = builder.netIncome;
+    }
+
+    public double getIncome() {
+        return income;
+    }
+
+    public double getSocialSecurity() {
+        return socialSecurity;
+    }
+
+    public double getHealthSecurity() {
+        return healthSecurity;
+    }
+
+    public double getSicknessSecurity() {
+        return sicknessSecurity;
+    }
+
+    public double getHealthSocialTax9() {
+        return healthSocialTax9;
+    }
+
+    public double getHealthSocialTax7_75() {
+        return healthSocialTax7_75;
+    }
+
+    public double getTaxDeductibleExpenses() {
+        return taxDeductibleExpenses;
+    }
+
+    public double getTaxedIncome() {
+        return taxedIncome;
+    }
+
+    public long getRoundedTaxedIncome() {
+        return roundedTaxedIncome;
+    }
+
+    public double getAdvanceTax() {
+        return advanceTax;
+    }
+
+    public double getTaxFreeIncome() {
+        return taxFreeIncome;
+    }
+
+    public double getAdvanceTaxPaid() {
+        return advanceTaxPaid;
+    }
+
+    public long getRoundedAdvanceTaxPaid() {
+        return roundedAdvanceTaxPaid;
+    }
+
+    public double getNetIncome() {
+        return netIncome;
     }
 }

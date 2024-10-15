@@ -122,19 +122,19 @@ public class TaxCalculator {
             Net Income: %.2f
             """,
         contractType,
-        result.income,
-        result.socialSecurity,
-        result.healthSecurity,
-        result.sicknessSecurity,
-        result.healthSocialTax9,
-        result.healthSocialTax7_75,
-        result.taxDeductibleExpenses,
-        result.taxedIncome,
-        result.roundedTaxedIncome,
-        result.advanceTax,
-        result.taxFreeIncome,
-        result.advanceTaxPaid,
-        result.roundedAdvanceTaxPaid,
-        result.netIncome);
+        result.getIncome(),
+        result.getSocialSecurity(),
+        result.getHealthSecurity(),
+        result.getSicknessSecurity(),
+        result.getHealthSocialTax9(),
+        result.getHealthSocialTax7_75(),
+        result.getTaxDeductibleExpenses(),
+        result.getTaxedIncome(),
+        result.getRoundedTaxedIncome(),
+        result.getAdvanceTax(),
+        result.getTaxFreeIncome(),
+        result.getAdvanceTaxPaid(),
+        result.getRoundedAdvanceTaxPaid(),
+        result.getNetIncome());
   }
 }
