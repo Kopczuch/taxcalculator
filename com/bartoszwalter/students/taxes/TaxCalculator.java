@@ -8,6 +8,7 @@ import com.bartoszwalter.students.taxes.models.TaxResultBuilder;
 import com.bartoszwalter.students.taxes.enums.EmploymentRates;
 import com.bartoszwalter.students.taxes.enums.HealthSocialRates;
 import com.bartoszwalter.students.taxes.enums.TaxConstants;
+import com.bartoszwalter.students.taxes.enums.ContractType;
 import com.bartoszwalter.students.taxes.utils.CalculationUtils;
 
 public class TaxCalculator {
@@ -15,11 +16,11 @@ public class TaxCalculator {
   public static void main(String[] args) {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
       double income = getInputIncome(reader);
-      char contractType = getContractType(reader);
+      ContractType contractType = getContractType(reader);
 
       TaxResult result = switch (contractType) {
-        case 'E' -> calculateTax(income, true);
-        case 'C' -> calculateTax(income, false);
+        case ContractType.EMPLOYMENT -> calculateTax(income, true);
+        case ContractType.CIVIL_CONTRACT -> calculateTax(income, false);
         default -> {
           System.out.println("Unknown contract type!");
           yield null;
@@ -27,7 +28,7 @@ public class TaxCalculator {
       };
 
       if (result != null) {
-        printTaxDetails(result, contractType == 'E' ? "EMPLOYMENT" : "CIVIL CONTRACT");
+        printTaxDetails(result, contractType);
       }
 
     } catch (Exception ex) {
@@ -40,9 +41,15 @@ public class TaxCalculator {
     return Double.parseDouble(reader.readLine());
   }
 
-  private static char getContractType(BufferedReader reader) throws Exception {
+  private static ContractType getContractType(BufferedReader reader) throws Exception {
     System.out.print("Contract Type: (E)mployment, (C)ivil: ");
-    return reader.readLine().trim().toUpperCase().charAt(0);
+    char choice = reader.readLine().trim().toUpperCase().charAt(0);
+
+    return switch (choice) {
+        case 'E' -> ContractType.EMPLOYMENT;
+        case 'C' -> ContractType.CIVIL_CONTRACT;
+        default -> throw new IllegalArgumentException("Invalid contract type entered.");
+    };
   }
 
   private static TaxResult calculateTax(double income, boolean isEmployment) {
@@ -82,8 +89,8 @@ public class TaxCalculator {
     long roundedAdvanceTaxPaid = CalculationUtils.roundToNearestInt(advanceTaxPaid);
 
     // Calculate net income
-    double netIncome = income
-        - (socialSecurity + healthSecurity + sicknessSecurity + healthSocialTax9 + roundedAdvanceTaxPaid);
+    double costs = socialSecurity + healthSecurity + sicknessSecurity + healthSocialTax9 + roundedAdvanceTaxPaid;
+    double netIncome = income - costs;
 
     TaxResult taxResult = new TaxResultBuilder()
         .setIncome(income)
@@ -105,7 +112,7 @@ public class TaxCalculator {
     return taxResult;
   }
 
-  private static void printTaxDetails(TaxResult result, String contractType) {
+  private static void printTaxDetails(TaxResult result, ContractType contractType) {
     System.out.printf(
         """
             %s
@@ -121,7 +128,7 @@ public class TaxCalculator {
             Advance Tax Paid: %.2f (Rounded: %d)
             Net Income: %.2f
             """,
-        contractType,
+        contractType.getContractType(),
         result.getIncome(),
         result.getSocialSecurity(),
         result.getHealthSecurity(),
