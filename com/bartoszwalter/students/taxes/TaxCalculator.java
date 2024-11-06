@@ -1,36 +1,37 @@
 package com.bartoszwalter.students.taxes;
 
+import com.bartoszwalter.students.taxes.models.CivilContractTax;
+import com.bartoszwalter.students.taxes.models.EmploymentTax;
 import com.bartoszwalter.students.taxes.models.TaxResult;
 import com.bartoszwalter.students.taxes.enums.ContractType;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class TaxCalculator {
-  public static void main(String[] args) {
-    Reader reader = new Reader();
-    Output output = new Output();
-    Tax taxCalculator = new Tax();
+    public static void main(String[] args) {
+        Reader reader = new Reader();
+        Output output = new Output();
 
-    Map<ContractType, Function<Double, TaxResult>> contractCalculations = new EnumMap<>(ContractType.class);
-    contractCalculations.put(ContractType.EMPLOYMENT, income -> taxCalculator.calculateTax(income, true));
-    contractCalculations.put(ContractType.CIVIL_CONTRACT, income -> taxCalculator.calculateTax(income, false));
+        Map<ContractType, Class<? extends Tax>> taxClasses = new EnumMap<>(ContractType.class);
+        taxClasses.put(ContractType.EMPLOYMENT, EmploymentTax.class);
+        taxClasses.put(ContractType.CIVIL_CONTRACT, CivilContractTax.class);
 
-    try {
-      double income = reader.getInputIncome();
-      ContractType contractType = reader.getContractType();
+        try {
+            double income = reader.getInputIncome();
+            ContractType contractType = reader.getContractType();
 
-      Function<Double, TaxResult> taxFunction = contractCalculations.get(contractType);
+            Class<? extends Tax> taxClass = taxClasses.get(contractType);
 
-      if (taxFunction != null) {
-        TaxResult result = taxFunction.apply(income);
-        output.printTaxDetails(result, contractType);
-      } else {
-        System.out.println("Unknown contract type!");
-      }
-    } catch (Exception ex) {
-      System.out.println("Error: " + ex.getMessage());
+            if (taxClass != null) {
+                Tax tax = taxClass.getDeclaredConstructor(double.class).newInstance(income);
+                TaxResult result = tax.calculateTax();
+                output.printTaxDetails(result, contractType);
+            } else {
+                System.out.println("Unknown contract type!");
+            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
     }
-  }
 }
