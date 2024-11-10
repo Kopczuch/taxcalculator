@@ -1,3 +1,4 @@
+
 package com.bartoszwalter.students.taxes;
 
 import java.io.BufferedReader;
@@ -17,13 +18,14 @@ public class Reader {
     }
 
     public ContractType getContractType() throws Exception {
-        System.out.print("Contract Type: (E)mployment, (C)ivil: ");
-        char choice = reader.readLine().trim().toUpperCase().charAt(0);
+        StringBuilder prompt = new StringBuilder("Contract Type: ");
+        for (ContractType type : ContractType.values()) {
+            prompt.append("(").append(type.getShortCode()).append(")").append(type.getContractType()).append(", ");
+        }
+        prompt.setLength(prompt.length() - 2);
+        System.out.print(prompt + ": ");
 
-        return switch (choice) {
-            case 'E' -> ContractType.EMPLOYMENT;
-            case 'C' -> ContractType.CIVIL_CONTRACT;
-            default -> throw new IllegalArgumentException("Invalid contract type entered.");
-        };
+        char choice = reader.readLine().trim().toUpperCase().charAt(0);
+        return ContractType.fromShortCode(choice);
     }
 }
