@@ -3,10 +3,12 @@ package com.bartoszwalter.students.taxes.enums;
 import com.bartoszwalter.students.taxes.components.TaxComponent;
 import com.bartoszwalter.students.taxes.models.CivilContractTax;
 import com.bartoszwalter.students.taxes.models.EmploymentTax;
+import com.bartoszwalter.students.taxes.models.FreelanceContractTax;
 
 public enum ContractType {
     EMPLOYMENT("EMPLOYMENT", 'E', EmploymentTax.class),
-    CIVIL_CONTRACT("CIVIL CONTRACT", 'C', CivilContractTax.class);
+    CIVIL_CONTRACT("CIVIL CONTRACT", 'C', CivilContractTax.class),
+    FREELANCE("FREELANCE", 'F', FreelanceContractTax.class);
 
     private final String type;
     private final char shortCode;

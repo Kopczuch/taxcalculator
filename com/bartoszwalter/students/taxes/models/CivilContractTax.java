@@ -1,32 +1,46 @@
 package com.bartoszwalter.students.taxes.models;
 
-import com.bartoszwalter.students.taxes.components.TaxComponent;
-import com.bartoszwalter.students.taxes.enums.EmploymentRates;
-import com.bartoszwalter.students.taxes.enums.HealthSocialRates;
+import com.bartoszwalter.students.taxes.components.*;
 import com.bartoszwalter.students.taxes.enums.TaxConstants;
 import com.bartoszwalter.students.taxes.utils.CalculationUtils;
 
 public class CivilContractTax implements TaxComponent {
     private final double income;
 
+    private final SocialSecurityComponent socialSecurityComponent;
+    private final HealthSecurityComponent healthSecurityComponent;
+    private final SicknessSecurityComponent sicknessSecurityComponent;
+    private final HighHealthSocialTaxComponent highHealthSocialTaxComponent;
+    private final LowHealthSocialTaxComponent lowHealthSocialTaxComponent;
+    private final DeductibleExpensesComponent deductibleExpensesComponent;
+    private final AdvanceTaxComponent advanceTaxComponent;
+
     public CivilContractTax(double income) {
         this.income = income;
+
+        this.socialSecurityComponent = new SocialSecurityComponent();
+        this.healthSecurityComponent = new HealthSecurityComponent();
+        this.sicknessSecurityComponent = new SicknessSecurityComponent();
+        this.highHealthSocialTaxComponent = new HighHealthSocialTaxComponent();
+        this.lowHealthSocialTaxComponent = new LowHealthSocialTaxComponent();
+        this.deductibleExpensesComponent = new DeductibleExpensesComponent();
+        this.advanceTaxComponent = new AdvanceTaxComponent();
     }
 
     @Override
     public void calculate(TaxResult result) {
-        double socialSecurity = CalculationUtils.calculatePercentage(income, EmploymentRates.SOCIAL_SECURITY.getRate());
-        double healthSecurity = CalculationUtils.calculatePercentage(income, EmploymentRates.HEALTH_SECURITY.getRate());
-        double sicknessSecurity = CalculationUtils.calculatePercentage(income, EmploymentRates.SICKNESS_SECURITY.getRate());
+        double socialSecurity = socialSecurityComponent.calculate(income);
+        double healthSecurity = healthSecurityComponent.calculate(income);
+        double sicknessSecurity = sicknessSecurityComponent.calculate(income);
 
-        double healthSocialTax9 = CalculationUtils.calculatePercentage(income, HealthSocialRates.RATE_9.getRate());
-        double healthSocialTax7_75 = CalculationUtils.calculatePercentage(income, HealthSocialRates.RATE_7_75.getRate());
+        double healthSocialTax9 = highHealthSocialTaxComponent.calculate(income);
+        double healthSocialTax7_75 = lowHealthSocialTaxComponent.calculate(income);
 
-        double taxDeductibleExpenses = CalculationUtils.calculatePercentage(income, TaxConstants.TAX_DEDUCTIBLE_PERCENTAGE.getValue());
+        double taxDeductibleExpenses = deductibleExpensesComponent.calculate(income);
         double taxedIncome = income - taxDeductibleExpenses;
         long roundedTaxedIncome = CalculationUtils.roundToNearestInt(taxedIncome);
 
-        double advanceTax = CalculationUtils.calculatePercentage(roundedTaxedIncome, TaxConstants.ADVANCE_TAX_RATE.getValue());
+        double advanceTax = advanceTaxComponent.calculate(roundedTaxedIncome);
         double taxFreeIncome = TaxConstants.TAX_FREE_ALLOWANCE.getValue();
 
         double advanceTaxPaid = advanceTax - healthSocialTax7_75 - taxFreeIncome;
