@@ -5,6 +5,8 @@ import com.bartoszwalter.students.taxes.components.TaxComponent;
 import com.bartoszwalter.students.taxes.enums.ContractType;
 import com.bartoszwalter.students.taxes.factory.TaxComponentFactory;
 import com.bartoszwalter.students.taxes.models.TaxResult;
+import com.bartoszwalter.students.taxes.utils.Output;
+import com.bartoszwalter.students.taxes.utils.Reader;
 
 public class TaxCalculator {
     public static void main(String[] args) {

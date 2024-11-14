@@ -1,4 +1,4 @@
-package com.bartoszwalter.students.taxes;
+package com.bartoszwalter.students.taxes.utils;
 
 import com.bartoszwalter.students.taxes.models.TaxResult;
 

@@ -1,12 +1,12 @@
 
-package com.bartoszwalter.students.taxes;
+package com.bartoszwalter.students.taxes.utils;
 
+import com.bartoszwalter.students.taxes.enums.ContractType;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import com.bartoszwalter.students.taxes.enums.ContractType;
 
 public class Reader {
-    private BufferedReader reader;
+    private final BufferedReader reader;
 
     public Reader() {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
